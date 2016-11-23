@@ -11,49 +11,57 @@ use GoPay;
 
 class GoPaySDK
 {
-    protected $app;
     protected $gopay;
 
-    protected $scope;
-    protected $lang;
+    protected $config = [];
+    protected $services = [];
+    protected $needReInit = false;
 
-    public function __construct($app)
+    protected $logsBefore = [];
+    private $logClosure;
+
+    public function __construct()
     {
-        $this->app = $app;
+        $this->config = [
+            'goid' => config('gopay.goid'),
+            'clientId' => config('gopay.clientId'),
+            'clientSecret' => config('gopay.clientSecret'),
+            'isProductionMode' => !getenv('APP_DEBUG'),
+            'timeout' => config('gopay.timeout')
+        ];
 
         $fallback = config('app.fallback_locale');
 
-        if(isset(config('gopay.languages')[\Lang::locale()])){
-            $language = config('gopay.languages')[\Lang::locale()];
+        if(isset(config('gopay.languages')[\App::getLocale()])){
+            $language = config('gopay.languages')[\App::getLocale()];
         } else {
             $language = config('gopay.languages')[$fallback];
         }
 
         if(defined($langConst = 'GoPay\Definition\Language::'.$language)) {
-            $this->lang = constant($langConst);
+            $this->config['language'] = constant($langConst);
         } else {
-            $this->lang = GoPay\Definition\Language::ENGLISH;
+            $this->config['language'] = GoPay\Definition\Language::ENGLISH;
         }
 
         if(defined($scopeConst = 'GoPay\Definition\TokenScope::'.config('gopay.defaultScope'))){
-            $this->scope = constant($scopeConst);
+            $this->config['scope'] = constant($scopeConst);
         } else {
-            $this->scope = GoPay\Definition\TokenScope::CREATE_PAYMENT;
+            $this->config['scope'] = GoPay\Definition\TokenScope::CREATE_PAYMENT;
         }
+
+        $this->services['cache'] = new LaravelTokenCache();
+        $this->services['logger'] = new Logger();
+
+        $this->initGoPay();
     }
 
     protected function initGoPay()
     {
-        $this->gopay = GoPay\Api::payments([
-            'goid' => config('gopay.goid'),
-            'clientId' => config('gopay.clientId'),
-            'clientSecret' => config('gopay.clientSecret'),
-            'isProductionMode' => !Config::get('APP_DEBUG'),
-            'scope' => $this->scope,
-            'language' => $this->lang,
-            'timeout' => config('gopay.timeout')
-        ]);
-        return true;
+        $this->gopay = GoPay\Api::payments($this->config, $this->services);
+        if($this->needReInit)
+            $this->needReInit = false;
+        return $this->gopay;
     }
 
     public function __call($name, $arguments)
@@ -62,7 +70,12 @@ class GoPaySDK
         {
             return $this->{$name}(...$arguments);
         } else if(method_exists($this->gopay, $name)){
-            return $this->gopay->{$name}(...$arguments);
+            if($this->needReInit){
+                $gp = $this->initGoPay();
+            } else {
+                $gp = $this->gopay;
+            }
+            return $gp->{$name}(...$arguments);
         }
 
         return null;
@@ -72,27 +85,47 @@ class GoPaySDK
     {
         if(defined($scopeConst = 'GoPay\Definition\TokenScope::'.$scope))
         {
-            $this->scope = constant($scopeConst);
+            $this->config['scope'] = constant($scopeConst);
         } else {
-            $this->scope = $scope;
+            $this->config['scope'] = $scope;
         }
-
-        while($this->initGoPay() != true){}
-
+        $this->needReInit = true;
         return $this;
     }
 
     public function lang($lang)
     {
-        if(defined($scopeConst = 'GoPay\Definition\Language::'.$lang))
+        if(defined($langConst = 'GoPay\Definition\Language::'.$lang))
         {
-            $this->scope = constant($lang);
+            $this->config['language'] = constant($langConst);
+        } else if(isset(config('gopay.languages')[$lang]) && defined($langConst = 'GoPay\Definition\Language::'.config('gopay.languages')[$lang])) {
+            $this->config['language'] = constant($langConst);
         } else {
-            $this->scope = $lang;
+            $this->config['language'] = $lang;
         }
+        $this->needReInit = true;
+        return $this;
+    }
 
-        while($this->initGoPay() != true){}
+    public function logHttpCommunication($request, $response)
+    {
+        if($this->logClosure == null) {
 
+            $this->logsBefore[] = [$request, $response];
+        }else{
+            call_user_func($this->logClosure, $request, $response);
+        }
+    }
+
+    public function log($closure)
+    {
+        $this->logClosure = $closure;
+
+        foreach($this->logsBefore as $log)
+        {
+            call_user_func_array($this->logClosure, $log);
+        }
+        $this->logsBefore = [];
         return $this;
     }
 }

@@ -40,7 +40,7 @@ class GopayServiceProvider extends ServiceProvider
 
         $this->app['gopay-sdk'] = $this->app->share(function($app)
         {
-            return new GoPaySDK($app);
+            return new GoPaySDK();
         });
     }
 }

@@ -5,6 +5,9 @@
     "require": {
         "php": ">=5.6.0",
         "illuminate/support": "5.*",
+        "illuminate/config": "5.*",
+        "illuminate/cache": "5.*",
+        "illuminate/container": "5.*",
         "gopay/payments-sdk-php": "^1.1"
     },
     "license": "MIT",

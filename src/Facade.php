@@ -6,9 +6,9 @@
  */
 namespace HazeStudio\LaravelGoPaySDK;
 
-use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Facade as LaravelFacade;
 
-class GoPay extends Facade
+class Facade extends LaravelFacade
 {
     /**
      * Get the registered name of the component.
