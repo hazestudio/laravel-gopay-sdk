@@ -1,5 +1,5 @@
-Laravel-GoPay-SDK
-====================
+Laravel GoPay SDK
+=================
 ### Docs
 
 * [Installation](#installation)
@@ -92,7 +92,9 @@ You can log every Http request and response that GoPay make to api by using log 
 ```php
 \GoPay::log(function($request, $response){
     \Log::info("{$request->method} {$request->url} -> {$response->statusCode}");
-})->lang($user->locale)->scope('ALL')->refundPayment(...);
+})->lang($user->locale)
+    ->scope('ALL')
+    ->refundPayment(...);
 ```
 ### All methods from official SDK working
 https://doc.gopay.com/en/?php#establishment-of-payment
