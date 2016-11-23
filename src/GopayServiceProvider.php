@@ -21,8 +21,6 @@ class GopayServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config.php' => config_path('gopay.php'),
         ]);
-
-        require_once __DIR__.'/../vendor/autoload.php'; //Develop
     }
 
     /**
@@ -32,6 +30,10 @@ class GopayServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if(is_dir($vendor = __DIR__.'/../vendor')){
+            require_once $vendor.'/autoload.php';
+        }
+
         $this->mergeConfigFrom(
             __DIR__.'/config.php', 'gopay'
         );

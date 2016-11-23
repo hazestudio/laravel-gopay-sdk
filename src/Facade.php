@@ -4,7 +4,7 @@
  * Date: 22.11.2016
  * Time: 14:55
  */
-namespace HazeStudio\LaravelGoPaySDK\Facades;
+namespace HazeStudio\LaravelGoPaySDK;
 
 use Illuminate\Support\Facades\Facade;
 

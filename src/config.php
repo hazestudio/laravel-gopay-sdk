@@ -3,13 +3,11 @@ return [
     'goid' => '...',
     'clientId' => '...',
     'clientSecret' => '...',
-    'isProductionMode' => false,
-    'defaultScope' => 'all',
-    'fallbackLanguage' => 'EN',
+    'defaultScope' => 'ALL', //GoPay\Definition\TokenScope Constants
     'languages' => [
-        'en' => 'EN',
-        'sk' => 'SK',
-        'cs' => 'CZ'
-    ], //Laravel languages to GoPay
+        'en' => 'ENGLISH',
+        'sk' => 'SLOVAK',
+        'cs' => 'CZECH'
+    ], //Map Laravel languages to GoPay\Definition\Language Constants
     'timeout' => 30
 ];
