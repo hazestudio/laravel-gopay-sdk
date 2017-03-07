@@ -15,5 +15,5 @@ class Facade extends LaravelFacade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'gopay-sdk'; }
+    protected static function getFacadeAccessor() { return 'GopaySDK'; }
 }

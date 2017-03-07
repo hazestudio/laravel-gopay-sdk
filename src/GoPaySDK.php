@@ -8,6 +8,7 @@
 namespace HazeStudio\LaravelGoPaySDK;
 
 use GoPay;
+use HazeStudio\LaravelGoPaySDK\Events\PaymentCreated;
 
 class GoPaySDK
 {
@@ -75,7 +76,16 @@ class GoPaySDK
             } else {
                 $gp = $this->gopay;
             }
-            return $gp->{$name}(...$arguments);
+            $methodResult = $gp->{$name}(...$arguments);
+
+            switch ($name){
+                case 'createPayment':
+                    event(new PaymentCreated($methodResult));
+                    break;
+                default:
+            }
+
+            return $methodResult;
         }
 
         return null;

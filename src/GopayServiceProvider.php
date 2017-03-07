@@ -7,6 +7,7 @@
 
 namespace HazeStudio\LaravelGoPaySDK;
 
+use HazeStudio\LaravelGoPaySDK\Events\PaymentCreated;
 use Illuminate\Support\ServiceProvider;
 
 class GopayServiceProvider extends ServiceProvider
@@ -37,9 +38,8 @@ class GopayServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/config.php', 'gopay'
         );
-
-        $this->app['gopay-sdk'] = $this->app->share(function($app)
-        {
+        
+        $this->app->singleton('GopaySDK', function ($app) {
             return new GoPaySDK();
         });
     }
