@@ -1,5 +1,8 @@
-Laravel GoPay SDK
-=================
+# Laravel GoPay SDK
+[![Build Status](https://scrutinizer-ci.com/g/hazestudio/laravel-gopay-sdk/badges/build.png?b=master)](https://scrutinizer-ci.com/g/hazestudio/laravel-gopay-sdk/build-status/master) [![Scrutinizer](https://img.shields.io/scrutinizer/g/hazestudio/laravel-gopay-sdk.svg)](https://scrutinizer-ci.com/g/hazestudio/laravel-gopay-sdk/?branch=master) [![Latest Stable Version](https://img.shields.io/packagist/v/hazestudio/laravel-gopay-sdk.svg)](https://packagist.org/packages/hazestudio/laravel-gopay-sdk) [![Total Downloads](https://img.shields.io/packagist/dt/hazestudio/laravel-gopay-sdk.svg)]() [![Packagist](https://img.shields.io/packagist/l/hazestudio/laravel-gopay-sdk.svg?style=plastic)]()
+[![Beerpay](https://beerpay.io/hazestudio/laravel-gopay-sdk/badge.svg?style=beer)](https://beerpay.io/hazestudio/laravel-gopay-sdk)
+
+
 ### Docs
 
 * [Installation](#installation)
@@ -96,10 +99,28 @@ You can log every Http request and response that GoPay make to api by using log 
     ->scope('ALL')
     ->refundPayment(...);
 ```
+
+### Events
+
+|      **Name**      |                     **Class**                    |
+|:--------------:|:------------------------------------------------:|
+| PaymentCreated | HazeStudio\LaravelGoPaySDK\Events\PaymentCreated |
+
+Example:
+```php
+Event::listen(\HazeStudio\LaravelGoPaySDK\Events\PaymentCreated::class, function ($event) {
+    dd($event->payment);
+});
+```
+
 ### All methods from official SDK working
 https://doc.gopay.com/en/?php#establishment-of-payment
 
 Just call them at GoPay Facade.
+
+
+#####<span style="color:#04db19"> We will be very happy for any pull requests or issue reports</span>
+
 
 ## Examples
 
@@ -158,6 +179,7 @@ if ($response->hasSucceed()) {
     echo $response;
 }
 ```
+
 
 ## License
 Copyright (c) 2016 Haze Studio. MIT Licensed.
