@@ -1,8 +1,6 @@
 # Laravel GoPay SDK
 [![Build Status](https://scrutinizer-ci.com/g/hazestudio/laravel-gopay-sdk/badges/build.png?b=master)](https://scrutinizer-ci.com/g/hazestudio/laravel-gopay-sdk/build-status/master) [![Scrutinizer](https://img.shields.io/scrutinizer/g/hazestudio/laravel-gopay-sdk.svg)](https://scrutinizer-ci.com/g/hazestudio/laravel-gopay-sdk/?branch=master) [![Latest Stable Version](https://img.shields.io/packagist/v/hazestudio/laravel-gopay-sdk.svg)](https://packagist.org/packages/hazestudio/laravel-gopay-sdk) [![Total Downloads](https://img.shields.io/packagist/dt/hazestudio/laravel-gopay-sdk.svg)]() [![Packagist](https://img.shields.io/packagist/l/hazestudio/laravel-gopay-sdk.svg?style=plastic)]()
 
-[![Beerpay](https://beerpay.io/hazestudio/laravel-gopay-sdk/badge.svg?style=beer)](https://beerpay.io/hazestudio/laravel-gopay-sdk)
-
 ### Docs
 
 * [Installation](#installation)
