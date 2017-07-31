@@ -180,4 +180,4 @@ if ($response->hasSucceed()) {
 
 
 ## License
-Copyright (c) 2016 Haze Studio. MIT Licensed.
+Copyright (c) 2017 Haze s.r.o MIT Licensed.
