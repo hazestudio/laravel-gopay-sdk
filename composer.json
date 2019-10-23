@@ -3,11 +3,11 @@
     "description": "GoPay SDK integration with Laravel Framework",
     "type": "library",
     "require": {
-        "php": ">=5.6.0",
-        "illuminate/support": "5.*",
-        "illuminate/config": "5.*",
-        "illuminate/cache": "5.*",
-        "illuminate/container": "5.*",
+        "php": "^7.2",
+        "illuminate/support": "6.*",
+        "illuminate/config": "6.*",
+        "illuminate/cache": "6.*",
+        "illuminate/container": "6.*",
         "gopay/payments-sdk-php": "^1.1"
     },
     "license": "MIT",
