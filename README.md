@@ -65,9 +65,6 @@ return [
 ```
 ## Features
 ### Languages
-Package automatically set GoPay language by App::getLocale() transformed to properly gopay lang format according to your gopay.php languages configuration.
-When application returns locale that does not exists in GoPay, package will use app fallback locale transformed to GoPay language format.
-You can also modify language by calling function lang($locale) on GoPay Facade. Parameter can be GoPay Language constant name, value or Laravel locale that you have mapped to GoPay lang.
 ```php
 \GoPay::lang(GoPay\Definition\Languages::SLOVAK)
 //or just
@@ -77,27 +74,11 @@ You can also modify language by calling function lang($locale) on GoPay Facade. 
 ```
 
 ### Scopes
-Package will use defaultScope as scope for initial GoPay connection.
-Of course you can change scope runtime by calling function scope($new_scope) on GoPay Facade. Parameter can be GoPay TokenScope constant name or value.
 ```php
 \GoPay::scope(GoPay\Definition\TokenScope::ALL) //Override default scope
 //or
 \GoPay::scope('ALL')->createPayment(...);
 ```
-
-### Cache access token
-Package caching access tokens through Laravel Cache for config timeout minutes.
-
-### Log Http Communication
-You can log every Http request and response that GoPay make to api by using log function. Log has only one parameter with closure function. Here is some example:
-```php
-\GoPay::log(function($request, $response){
-    \Log::info("{$request->method} {$request->url} -> {$response->statusCode}");
-})->lang($user->locale)
-    ->scope('ALL')
-    ->refundPayment(...);
-```
-
 ### Events
 
 |      **Name**      |                     **Class**                    |
@@ -110,15 +91,6 @@ Event::listen(\HazeStudio\LaravelGoPaySDK\Events\PaymentCreated::class, function
     dd($event->payment);
 });
 ```
-
-### All methods from official SDK working
-https://doc.gopay.com/en/?php#establishment-of-payment
-
-Just call them at GoPay Facade.
-
-
-#### We will be very happy for any _pull requests_ or _issue reports_ :wink:
-
 
 ## Examples
 
@@ -177,7 +149,3 @@ if ($response->hasSucceed()) {
     echo $response;
 }
 ```
-
-
-## License
-Copyright (c) 2017 Haze s.r.o MIT Licensed.
